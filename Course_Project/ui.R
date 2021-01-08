@@ -35,7 +35,7 @@ shinyUI(
                                          h3("Description"),
                                          helpText("We make use of Motor Trend Data, a magazine containing Data about the automobile industry looking at a data set of a collection of cars, We are interested in exploring the relationship",
                                                   "between a set of variables and miles per gallon (MPG) (outcome).",
-                                                  "Under this analysis, we can anwser the question: Is an automatic or manual transmission better for MPG,by quantify the MPG difference between automatic and manual transmissions, among other analysis that can be conducted."),
+                                                  "Under this analysis, we can answer the question: Is an automatic or manual transmission better for MPG,by quantify the MPG difference between automatic and manual transmissions, among other analysis that can be conducted."),
                                          h3("Important"),
                                          p("This is a data frame with 32 observations on 11 variables."),
                                          hr(),

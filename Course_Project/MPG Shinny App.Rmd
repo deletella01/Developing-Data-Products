@@ -1,0 +1,113 @@
+---
+title: "A Shiny App that shows Miles per Gallon Relationship with Other Variables"
+author: "Bamidele Tella"
+date: "7th of January, 2021"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(shiny)
+library(datasets)
+library(png)
+```
+
+## Overview
+This is a shiny application project for the Coursera's Developing Data Products. We make use of Motor Trend Data, a magazine containing Data about the automobile industry looking at a data set of a collection of cars, We are interested in exploring the relationship between a set of variables and miles per gallon (MPG) (outcome). Under this analysis, we can answer the question: Is an automatic or manual transmission better for MPG,by quantify the MPG difference between automatic and manual transmissions, among other analysis that can be conducted. It contains a Boxplot of Fitted Model, a line indicating the model on a plot of MPG vs an input Variable, it also shows the Summary of the Model. The app is divided into two parts: User Interface(UI) and Server which serves as the engine of the application.
+
+## User Interface Source Code(UI)
+```{r, echo=TRUE,eval=FALSE}
+shinyUI(
+    fluidPage(
+        titlePanel("An App that shows the relationship of Miles per Gallon to different Variables"),
+            sidebarLayout(
+                sidebarPanel(
+                    selectInput("variable","Varables:",
+                                c("Number of Cylinder"="cyl",
+                                  "Displacement"="disp",
+                                  "HorsePower"="hp",
+                                  "Rear Axle Ratio"="drat",
+                                  "Weight"="wt",
+                                  "1/4 Mile Time"="qsec",
+                                  "Engine"="vs",
+                                  "Transmission"="am",
+                                  "Number of Fward Gears"="gear",
+                                  "Number of Carburetors"="carb"
+                                  )
+                                ),
+                    checkboxInput("outliers", "Show Plot's Outliers", FALSE),
+                    submitButton("Submit!")
+                    
+                    ),
+                
+                mainPanel(
+                    h2(textOutput("caption")),
+                    tabsetPanel(type = "tabs",
+                                tabPanel("BoxPlot", plotOutput("airbox")),
+                                tabPanel("Regression Model", 
+                                         plotOutput("airplot"),
+                                         verbatimTextOutput("airfit")
+                                         )
+                                )
+                    )
+                )
+        )
+    )
+```
+
+## Server Source Code
+```{r, eval=FALSE,echo=TRUE}
+mpgData=mtcars
+mpgData$am = factor(mpgData$am, labels = c("Automatic","Manual"))
+
+shinyServer(function(input, output) {
+   
+     airformula = reactive({
+        paste("mpg ~", input$variable)
+    })
+    
+    airpoint = reactive({
+        paste("mpg ~", "as.integer(",input$variable,")")
+    })
+    
+    airfit = reactive({
+        lm(as.formula(airpoint()),data = mpgData)
+    })
+    
+    output$caption = renderText({
+        airformula()
+    })
+    
+    output$airbox = renderPlot({
+        boxplot(as.formula(airformula()), data = mpgData, outline = input$outliers)
+    })
+    output$airfit = renderPrint({
+        summary(airfit())
+        })
+    output$airplot = renderPlot({
+        with(mpgData, {
+            plot(as.formula(airpoint()))
+            abline(airfit(),col="blue")
+        })
+    })
+    
+})
+
+```
+
+## App Images
+```{r}
+d1 <- readPNG("d1.png")
+plot.new()
+rasterImage(d1,0,0,1,1)
+
+d2 <- readPNG("d2.png")
+plot.new()
+rasterImage(d2,0,0,1,1)
+
+d3 <- readPNG("d3.png")
+plot.new()
+rasterImage(d3,0,0,1,1)
+```
+
+
