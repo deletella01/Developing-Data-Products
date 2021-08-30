@@ -1,5 +1,5 @@
 # Developing-Data-Products
-Developingg Data Products would cover how projects can be delivered as final products which have real life applications. It is divided into three(3) parts which are highlited below: 
+Developingg Data Products would cover how projects can be delivered as final products which have real life applications. It is divided into three(3) parts which are highlighted below: 
 ## Interactive Webpage Map
 This is a map visualization that does not only show locstion of places but it also has interactive feature which can serve the user with required information.
 This project can be viewed at https://rpubs.com/Deletella01/706550
